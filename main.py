@@ -1,5 +1,6 @@
+from models.person import Person
+
 def runPersonDatabase():
-	
 	for i in range(3):
 		userInput = inputUser()
 		personDict = createPerson(*userInput)
@@ -12,11 +13,8 @@ def inputUser():
 	return firstName, lastName, occupation
 
 def createPerson(firstName, lastName, occupation):
-	return {
-		"FirstName": firstName,
-		"LastName": lastName,
-		"Occupation": occupation,
-	}
+	person = Person(firstName, lastName, occupation)
+	return person
 
 if __name__ == "__main__":
 	runPersonDatabase()
