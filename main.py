@@ -14,7 +14,7 @@ def inputUser():
 	gender = input("What is the users gender: ")
 	return firstName, lastName, occupation, age, gender
 
-def createPerson(firstName, lastName, occupation, age, gender):
+def createPerson(firstName: str, lastName: str, occupation: str, age: int, gender: str) -> Person:
 	return Person(firstName, lastName, occupation, age, gender)
 
 if __name__ == "__main__":
