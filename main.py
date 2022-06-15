@@ -10,11 +10,12 @@ def inputUser():
 	firstName = input("What is the users first name: ")
 	lastName = input("What is the users last name: ")
 	occupation = input("What is the users occupation: ")
-	return firstName, lastName, occupation
+	age = input("What is the users age: ")
+	gender = input("What is the users gender: ")
+	return firstName, lastName, occupation, age, gender
 
-def createPerson(firstName, lastName, occupation):
-	person = Person(firstName, lastName, occupation)
-	return person
+def createPerson(firstName, lastName, occupation, age, gender):
+	return Person(firstName, lastName, occupation, age, gender)
 
 if __name__ == "__main__":
 	runPersonDatabase()
