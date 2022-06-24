@@ -4,11 +4,7 @@ from models.personDatabase import PersonDatabase
 personDB = PersonDatabase()
 
 def runPersonDatabase():
-	for i in range(1):
-		userInput = inputUser()
-		person = createPerson(*userInput)
-		print(person)
-		personDB.createPerson(person)
+	menu()
 
 def inputUser():
 	firstName = input("What is the users first name: ")
@@ -20,6 +16,47 @@ def inputUser():
 
 def createPerson(firstName: str, lastName: str, age: int, gender: str, occupation: str) -> Person:
 	return Person(firstName, lastName, occupation, age, gender)
+
+def listAllPeople():
+	personList = personDB.getAllPeople()
+	for person in personList:
+		print(person)
+
+def deletePerson():
+	pass
+
+def menu():
+	menu = {}
+	menu['1'] = "Add new person"
+	menu['2'] = "Look Up Person Record"
+	menu['3'] = "Look Up all People"
+	menu['4'] = "Delete person"
+	menu['5'] = "Exit"
+
+	shouldBreak = False
+
+	while shouldBreak == False:
+		options = menu.keys()
+		for entry in options:
+			print(entry, menu[entry])
+		selection = input("Please Select: ")
+		if selection == '1':
+			userInput = inputUser()
+			person = createPerson(*userInput)
+			personDB.createPerson(person)
+			print("person been add")
+		elif selection == '2':
+			print("person found")
+		elif selection == '3':
+			listAllPeople()
+			print("People found")
+		elif selection == '4':
+			print("person deleted")
+		elif selection == '5':
+			print("person database quit")
+			shouldBreak = True
+		else:
+			print("Not valid chocie try again!")
 
 if __name__ == "__main__":
 	runPersonDatabase()
