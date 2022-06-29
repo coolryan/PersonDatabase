@@ -17,13 +17,23 @@ def inputUser():
 def createPerson(firstName: str, lastName: str, age: int, gender: str, occupation: str) -> Person:
 	return Person(firstName, lastName, occupation, age, gender)
 
+def lookUpPerson():
+	id = input("Please enter an id of a person to look up: ")
+	person = personDB.getPerson(id)
+	print(person)
+
 def listAllPeople():
 	personList = personDB.getAllPeople()
 	for person in personList:
 		print(person)
 
-def deletePerson():
-	pass
+def deleteSinglePerson():
+	id = input("Please enter an id of a person to delete: ")
+	personWasDeleted = personDB.deleteRecord(id)
+	print(f"person deleted? {personWasDeleted}")
+
+def deleteAllPeople():
+	personDB.deleteAllRecords()
 
 def menu():
 	menu = {}
@@ -31,7 +41,8 @@ def menu():
 	menu['2'] = "Look Up Person Record"
 	menu['3'] = "Look Up all People"
 	menu['4'] = "Delete person"
-	menu['5'] = "Exit"
+	menu['5'] = "Delete all People"
+	menu['6'] = "Exit"
 
 	shouldBreak = False
 
@@ -46,13 +57,17 @@ def menu():
 			personDB.createPerson(person)
 			print("person been add")
 		elif selection == '2':
+			lookUpPerson()
 			print("person found")
 		elif selection == '3':
 			listAllPeople()
 			print("People found")
 		elif selection == '4':
-			print("person deleted")
+			deleteSinglePerson()
 		elif selection == '5':
+			deleteAllPeople()
+			print("people deleted")
+		elif selection == '6':
 			print("person database quit")
 			shouldBreak = True
 		else:
