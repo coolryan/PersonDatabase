@@ -20,8 +20,8 @@ class PersonDatabase:
 
 			sqliteConn.commit()
 		# Handle errors
-		except sqlite3.Error as e:
-			print('Error occured - ', e)
+		except sqlite3.Error as error:
+			print('Error occured - ', error)
 
 		# Close DB Connection irrespective of success
 		# or failure
@@ -44,14 +44,35 @@ class PersonDatabase:
 			sqliteConn.commit()
 
 		# Handle errors
-		except sqlite3.Error as e:
-			print('Error occured - ', e)
+		except sqlite3.Error as error:
+			print('Error occured - ', error)
 
 		# Close DB Connection irrespective of success
 		# or failure
 		finally:
 			if sqliteConn:
 				sqliteConn.close()
+
+	def getPerson(self, id: int) -> Person:
+		try:
+			sqliteConn = sqlite3.connect('person.db')
+			c = sqliteConn.cursor()
+
+			c.execute('SELECT * FROM person WHERE id = ?', id)
+
+			row = c.fetchone()
+
+			person = Person(id = row[0], firstName = row[1], lastName = row[2], age = row[3], gender = row[4], occupation = row[5])
+
+			return person
+
+		except sqlite3.Error as error:
+			print('Error occured - ', error)
+
+		finally:
+			if sqliteConn:
+				sqliteConn.close()
+
 
 	def getAllPeople(self) -> list[Person]:
 		personList = []
@@ -63,14 +84,62 @@ class PersonDatabase:
 			c.execute('SELECT * FROM person')
 			rows = c.fetchall()
 			for row in rows:
-				person = Person(firstName = row[1], lastName = row[2], age = row[3], gender = row[4], occupation = row[5])
+				person = Person(id = row[0], firstName = row[1], lastName = row[2], age = row[3], gender = row[4], occupation = row[5])
 				personList.append(person)
 
-		except sqlite3.Error as e:
-			print('Error occured - ', e)
+		except sqlite3.Error as error:
+			print('Error occured - ', error)
 
 		finally:
 			if sqliteConn:
 				sqliteConn.close()
 
 		return personList
+
+	def deleteRecord(self, id: int) -> bool:
+		# Create a database called person.db and then connect to the DB
+		# and create a cursor- for instance: 'c' stands for cursor
+		try:
+			sqliteConn = sqlite3.connect('person.db')
+			c = sqliteConn.cursor()
+
+			# Deleting signle row
+			sql_delete_single_query = '''DELETE FROM person WHERE ID = ?'''
+			c.execute(sql_delete_single_query, id)
+
+			sqliteConn.commit()
+
+			if c.rowcount == 0:
+				return False
+			else:
+				return True
+
+		# Handle errors
+		except sqlite3.Error as error:
+			print('Failed to delete single record from sqlite table- ', error)
+			return False
+
+		finally:
+			if sqliteConn:
+				sqliteConn.close()
+
+	def deleteAllRecords(self):
+		try:
+			sqliteConn = sqlite3.connect('person.db')
+			c = sqliteConn.cursor()
+
+			# Deleting multiple rows
+			sql_delete_multiple_query = '''DELETE FROM person'''
+			c.execute(sql_delete_multiple_query)
+
+			sqliteConn.commit()
+
+			print(f'Total {c.rowcount} Records deleted successfully')
+
+		# Handle errors
+		except sqlite3.Error as error:
+			print('Failed to delete multiple record from sqlite table- ', error)
+
+		finally:
+			if sqliteConn:
+				sqliteConn.close()
